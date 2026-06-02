@@ -167,7 +167,11 @@ export default function App() {
             const errData = JSON.parse(rawText);
             errMsg = errData.error || errMsg;
           } catch {
-            errMsg = `Server error (${response.status}): ${rawText.substring(0, 120)}`;
+            if (response.status === 404 || rawText.includes("NOT_FOUND") || rawText.toLowerCase().includes("could not be found")) {
+              errMsg = "The application backend was in standby (scaling down) or is starting up. Please wait a few seconds and try clicking 'Enhance' or 'Translate' again!";
+            } else {
+              errMsg = `Server error (${response.status}): ${rawText.substring(0, 120)}`;
+            }
           }
         } catch (readErr: any) {
           errMsg = `Server error (${response.status}): Failed to read response stream (${readErr?.message || readErr})`;
@@ -253,7 +257,11 @@ export default function App() {
             const errData = JSON.parse(rawText);
             errMsg = errData.error || errMsg;
           } catch {
-            errMsg = `Server error (${response.status}): ${rawText.substring(0, 120)}`;
+            if (response.status === 404 || rawText.includes("NOT_FOUND") || rawText.toLowerCase().includes("could not be found")) {
+              errMsg = "The application backend was in standby (scaling down) or is starting up. Please wait a few seconds and try clicking 'Synthesize Voice' again!";
+            } else {
+              errMsg = `Server error (${response.status}): ${rawText.substring(0, 120)}`;
+            }
           }
         } catch (readErr: any) {
           errMsg = `Server error (${response.status}): Failed to read response stream (${readErr?.message || readErr})`;
