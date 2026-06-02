@@ -179,7 +179,7 @@ app.post("/api/generate-voice", async (req, res) => {
       });
     }
 
-    const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+    const base64Audio = response?.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
 
     if (!base64Audio) {
       res.status(500).json({ error: "The voice synthesizer didn't yield any audio stream. Try rewriting the script or reducing its length." });

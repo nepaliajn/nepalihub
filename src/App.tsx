@@ -159,6 +159,18 @@ export default function App() {
         }),
       });
 
+      if (!response.ok) {
+        let errMsg = "Failed to refine text";
+        try {
+          const errData = await response.json();
+          errMsg = errData.error || errMsg;
+        } catch {
+          const textErr = await response.text();
+          errMsg = `Server error (${response.status}): ${textErr.substring(0, 120)}`;
+        }
+        throw new Error(errMsg);
+      }
+
       const data = await response.json();
       if (data.error) throw new Error(data.error);
 
@@ -229,8 +241,20 @@ export default function App() {
         body: JSON.stringify(payload),
       });
 
+      if (!response.ok) {
+        let errMsg = "Synthesis failure";
+        try {
+          const errData = await response.json();
+          errMsg = errData.error || errMsg;
+        } catch {
+          const textErr = await response.text();
+          errMsg = `Server error (${response.status}): ${textErr.substring(0, 120)}`;
+        }
+        throw new Error(errMsg);
+      }
+
       const data = await response.json();
-      if (!response.ok || data.error) throw new Error(data.error || "Synthesis failure");
+      if (data.error) throw new Error(data.error || "Synthesis failure");
 
       // Decode PCM bytes directly to WAV on the client side
       const wavBlob = base64ToWavBlob(data.audio, data.sampleRate);
