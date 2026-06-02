@@ -1,0 +1,6 @@
+{
+  "name": "Voice and Dialogue Generator",
+  "description": "Generate high-quality dialogues and narration in English and Nepali with multiple speakers, adaptive styles, and direct download access.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
