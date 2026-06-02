@@ -162,11 +162,15 @@ export default function App() {
       if (!response.ok) {
         let errMsg = "Failed to refine text";
         try {
-          const errData = await response.json();
-          errMsg = errData.error || errMsg;
-        } catch {
-          const textErr = await response.text();
-          errMsg = `Server error (${response.status}): ${textErr.substring(0, 120)}`;
+          const rawText = await response.text();
+          try {
+            const errData = JSON.parse(rawText);
+            errMsg = errData.error || errMsg;
+          } catch {
+            errMsg = `Server error (${response.status}): ${rawText.substring(0, 120)}`;
+          }
+        } catch (readErr: any) {
+          errMsg = `Server error (${response.status}): Failed to read response stream (${readErr?.message || readErr})`;
         }
         throw new Error(errMsg);
       }
@@ -244,11 +248,15 @@ export default function App() {
       if (!response.ok) {
         let errMsg = "Synthesis failure";
         try {
-          const errData = await response.json();
-          errMsg = errData.error || errMsg;
-        } catch {
-          const textErr = await response.text();
-          errMsg = `Server error (${response.status}): ${textErr.substring(0, 120)}`;
+          const rawText = await response.text();
+          try {
+            const errData = JSON.parse(rawText);
+            errMsg = errData.error || errMsg;
+          } catch {
+            errMsg = `Server error (${response.status}): ${rawText.substring(0, 120)}`;
+          }
+        } catch (readErr: any) {
+          errMsg = `Server error (${response.status}): Failed to read response stream (${readErr?.message || readErr})`;
         }
         throw new Error(errMsg);
       }
